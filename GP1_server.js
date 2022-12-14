@@ -26,8 +26,17 @@ function iniciar() {
         const ruta = reqUrl.pathname;
         let cadenaConnexio = 'mongodb://127.0.0.1/GP1';
 
-        if (ruta == '/inici') {
-            fs.readFile('./GP1_Menu.html', function (err, sortida) {
+        if (ruta =='/') {
+            fs.readFile('./GP1_Inici.html', function (err, sortida) {
+                response.writeHead(200, {
+                    "Content-Type": "text/html; charset=utf-8"
+                });
+                response.write(sortida);
+                response.end();
+            });
+        }
+        else if (ruta == '/login') {
+            fs.readFile('./GP1_Login.html', function (err, sortida) {
                 response.writeHead(200, {
                     "Content-Type": "text/html; charset=utf-8"
                 });
@@ -56,7 +65,7 @@ function iniciar() {
                 });
                 assert.equal(err, null);
                 console.log("Afegit document a col·lecció login");
-
+                request.url= '/login';
 
             });
         }
