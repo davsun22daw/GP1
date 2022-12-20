@@ -26,7 +26,7 @@ function iniciar() {
         const ruta = reqUrl.pathname;
         let cadenaConnexio = 'mongodb://127.0.0.1/GP1';
 
-        if (ruta =='/') {
+        if (ruta == '/') {
             fs.readFile('./GP1_Inici.html', function (err, sortida) {
                 response.writeHead(200, {
                     "Content-Type": "text/html; charset=utf-8"
@@ -44,10 +44,106 @@ function iniciar() {
                 response.end();
             });
         }
+
+        else if (ruta == '/comproba') {
+            MongoClient.connect(cadenaConnexio, function (err, client) {
+                assert.equal(null, err);
+                var db = client.db('GP1');
+                let nomL = reqUrl.searchParams.get('nomLogin');
+                let ContrasenyaL = reqUrl.searchParams.get('ContrasenyaLogin');
+                db.collection('login').find({ nom: nomL, Contrasenya: ContrasenyaL }).toArray(function (err, result) {
+                    if (err) throw err
+                    if (!result.length == 0) {
+                        fs.readFile('./GP1_Calendari.html', function (err, sortida) {
+                            response.writeHead(200, {
+                                "Content-Type": "text/html; charset=utf-8"
+                            });
+                            response.write(sortida);
+                            response.end();
+                        });
+
+                    } else {
+                        fs.readFile('./GP1_ErrorLogin.html', function (err, sortida) {
+                            response.writeHead(200, {
+                                "Content-Type": "text/html; charset=utf-8"
+                            });
+                            response.write(sortida);
+                            response.end();
+                        });
+                    }
+                });
+                assert.equal(err, null);
+
+            });
+        }
         else if (ruta == '/crea') {
             fs.readFile('./GP1_CreaUser.html', function (err, sortida) {
                 response.writeHead(200, {
                     "Content-Type": "text/html; charset=utf-8"
+                });
+                response.write(sortida);
+                response.end();
+            });
+        }
+
+        else if (ruta == '/imatges/1.png') {
+            fs.readFile('./imatges/1.png', function (err, sortida) {
+                response.writeHead(200, {
+                    "Content-Type": 'image/png'
+                });
+                response.write(sortida);
+                response.end();
+            });
+        }
+        else if (ruta == '/imatges/2.png') {
+            fs.readFile('./imatges/2.png', function (err, sortida) {
+                response.writeHead(200, {
+                    "Content-Type": 'image/png'
+                });
+                response.write(sortida);
+                response.end();
+            });
+        }
+        else if (ruta == '/imatges/3.png') {
+            fs.readFile('./imatges/3.png', function (err, sortida) {
+                response.writeHead(200, {
+                    "Content-Type": 'image/png'
+                });
+                response.write(sortida);
+                response.end();
+            });
+        }
+        else if (ruta == '/imatges/4.png') {
+            fs.readFile('./imatges/4.png', function (err, sortida) {
+                response.writeHead(200, {
+                    "Content-Type": 'image/png'
+                });
+                response.write(sortida);
+                response.end();
+            });
+        }
+        else if (ruta == '/imatges/5.png') {
+            fs.readFile('./imatges/5.png', function (err, sortida) {
+                response.writeHead(200, {
+                    "Content-Type": 'image/png'
+                });
+                response.write(sortida);
+                response.end();
+            });
+        }
+        else if (ruta == '/imatges/6.png') {
+            fs.readFile('./imatges/6.png', function (err, sortida) {
+                response.writeHead(200, {
+                    "Content-Type": 'image/png'
+                });
+                response.write(sortida);
+                response.end();
+            });
+        }
+        else if (ruta == '/imatges/7.png') {
+            fs.readFile('./imatges/7.png', function (err, sortida) {
+                response.writeHead(200, {
+                    "Content-Type": 'image/png'
                 });
                 response.write(sortida);
                 response.end();
@@ -65,7 +161,6 @@ function iniciar() {
                 });
                 assert.equal(err, null);
                 console.log("Afegit document a col·lecció login");
-                request.url= '/login';
 
             });
         }
@@ -88,7 +183,7 @@ function iniciar() {
                         results.forEach((doc) => {
                             response.write(`nom: ${doc.nom} <br>`);
                             response.write(`cognom: ${doc.cognom} <br>`);
-                            response.write(`password: ${doc.password} <br>`);
+                            response.write(`Contrasenya: ${doc.Contrasenya} <br>`);
                         });
                     } else {
                         response.end();
